@@ -1,0 +1,21 @@
+{
+  "name": "phonebook assets",
+  "version": "0.0.1",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt",
+    "node_modules",
+    "components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "main": "./assets/javascripts/application.js",
+  "dependencies": {
+    "angular": "latest",
+    "angular-cookies": "latest",
+    "angular-route" : "latest",
+    "angular-resource" : "latest",
+    "ngActiveResource": "latest"
+  }
+}

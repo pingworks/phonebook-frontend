@@ -1,0 +1,72 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:
+# Required-Start:    $remote_fs $syslog $network
+# Required-Stop:     $remote_fs $syslog $network
+# Should-Start:      $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: phonebook app
+# Description:       phonebook app
+### END INIT INFO
+set -e
+
+. /lib/lsb/init-functions
+
+NAME=phonebook-frontend
+#USER=deploy
+LOG="/tmp/${NAME}.log"
+
+# Read defaults
+if [ -e /etc/default/${NAME} ]; then
+  . /etc/default/${NAME}
+fi
+
+OPTS="--host 0.0.0.0"
+
+PIDFILE="/tmp/${NAME}.pid"
+DAEMON="/usr/local/bin/bundle"
+
+test -x $DAEMON || exit 1
+
+case $1 in
+  start)
+    # check for stale pid file
+    if [ -e $PIDFILE ] && ! kill -0 $(cat $PIDFILE) > /dev/null 2>&1; then
+      rm -f $PIDFILE
+    fi
+    if [ ! -e $PIDFILE ]; then
+      log_daemon_msg "Starting $NAME"
+      /sbin/start-stop-daemon --start --quiet --chuid $USER --chdir /opt/$NAME --background --make-pidfile --pidfile $PIDFILE --startas /bin/bash -- -c "exec /usr/local/bin/bundle exec rackup --host 0.0.0.0 >${LOG} 2>&1"
+      log_end_msg $?
+    fi
+    ;;
+  stop)
+    # check for stale pid file
+    if [ -e $PIDFILE ] && ! kill -0 $(cat $PIDFILE) > /dev/null 2>&1; then
+      rm -f $PIDFILE
+    fi
+    if [ -e $PIDFILE ]; then
+      log_daemon_msg "Stopping $NAME"
+      /sbin/start-stop-daemon --stop --quiet --pidfile $PIDFILE
+      log_end_msg $?
+      rm -f $PIDFILE
+    fi
+    ;;
+  restart)
+    $0 stop
+    sleep 2
+    $0 start
+    ;;
+  status)
+    status_of_proc -p $PIDFILE "$DAEMON" ${NAME}
+    RETVAL=$?
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+esac
+
+exit 0

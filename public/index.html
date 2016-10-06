@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Phonebook</title>
+    <meta charset="utf-8">
+    <link href="/assets/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/stylesheets/application.css.scss" />
+    <script src="/assets/javascript/application.js"></script>
+  </head>
+
+  <body ng-app="phonebook">
+    <div id="main" ng-controller="contactsController">
+      <h1>Contacts</h1>
+
+
+      <div class="well">
+        <form ng-submit="addContact()" role="form">
+          <div class="form-group">
+            <input type="text" name="contact[name]" ng-model="newContact.name"  placeholder="Name" class="form-control" ng-change="newContact.validateIfErrored('name')" />
+            <div ng-show="newContact.$errors.name" class="alert alert-warning" ng-bind="newContact.$errors.name"></div>
+          </div>
+          <div class="form-group">
+            <input type="text" name="contact[phone]" ng-model="newContact.phone"  placeholder="Phone" class="form-control" ng-change="newContact.validateIfErrored('phone')" />
+            <div ng-show="newContact.$errors.phone" class="alert alert-warning" ng-bind="newContact.$errors.phone"></div>
+          </div>
+          <div class="input-group">
+            <button class="btn btn-primary">Add contact</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="well">
+        <input type="search" ng-model="q" placeholder="search contacts ..." class="form-control"/>
+      </div>
+
+      <table class="table table-bordered table-hover table-condensed" style="width:100%;">
+        <tr style="font-weight: bold">
+          <td>Name</td>
+          <td>Phone</td>
+          <td style="width: 100px;">&nbsp;</td>
+        </tr>
+        <tr ng-repeat="contact in contacts | orderBy:'-id' | filter:q">
+          <td inline-editable inline-editable-model="contact" inline-editable-attribute="contact.name"></td>
+          <td inline-editable inline-editable-model="contact" inline-editable-attribute="contact.phone"></td>
+          <td><a href="#" ng-click="remove($index)" confirmation-needed="Are you sure you want to delete this?">delete</a></td>
+        </tr>
+      </table>
+    </div>
+
+
+  </body>
+</html>
