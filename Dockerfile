@@ -4,7 +4,7 @@ MAINTAINER Christoph Lukas <christoph.lukas@gmx.net>
 ENV DEBIAN_FRONTEND noninteractive
 ARG ARTEFACT_FILE
 
-COPY $ARTEFACT_FILE /tmp/
+COPY target/$ARTEFACT_FILE /tmp/
 RUN dpkg -i "/tmp/$ARTEFACT_FILE" && rm -f "/tmp/$ARTEFACT_FILE"
 
 COPY entrypoint.sh /entrypoint.sh
