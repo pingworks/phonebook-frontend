@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: phonebook-frontend
-  namespace: testuser
+  namespace: default
 spec:
   replicas: 1
   template:
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: phonebook-frontend
-  namespace: testuser
+  namespace: default
   labels:
     app: phonebook-frontend
     stage: test
