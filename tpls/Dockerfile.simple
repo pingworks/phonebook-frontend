@@ -1,0 +1,7 @@
+FROM pingworks/ruby-phonebook:019ab7bab4cc
+
+COPY . /src
+
+WORKDIR /src
+
+CMD ["/usr/local/bin/bundle", "exec", "rackup", "--host", "0.0.0.0"]
