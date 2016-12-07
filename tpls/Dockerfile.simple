@@ -1,4 +1,4 @@
-FROM pingworks/ruby-phonebook:019ab7bab4cc
+FROM kube-registry:5000/ruby-phonebook:019ab7bab4cc
 
 COPY . /src
 
